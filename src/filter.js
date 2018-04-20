@@ -5,9 +5,18 @@ import moment from "moment";
 //定义用的路由集合
 let arrFilder = [
 	require('pages/home/filter'),
-	require('pages/barcode/filter'),
-	require('pages/users/filter'),
-	require('pages/customerGather/filter'),
+	require('pages/address/filter'),
+	require('pages/cart/filter'),
+	require('pages/coupons/filter'),
+	require('pages/goods/filter'),
+	require('pages/kanjia/filter'),
+	require('pages/notice/filter'),
+	require('pages/order/filter'),
+	require('pages/recharge/filter'),
+	require('pages/start/filter'),
+	require('pages/user/filter'),
+	require('pages/withdraw/filter'),
+	require('pages/materialFlow/filter'),
 	require('pages/error/filter'),
 ];
 

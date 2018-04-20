@@ -1,5 +1,3 @@
-import globalService from 'common/js/global-service'
-import appRouters from "common/js/app-routers"
 // 默认首页路由
 const route = [{
 	path: '/',
@@ -13,9 +11,18 @@ const route = [{
 //合并路由 router.js 路由集合
 let routes = route.concat(
 	require('pages/home/router'),
-	require('pages/barcode/router'),
-	require('pages/users/router'),
-	require('pages/customerGather/router'),
+	require('pages/address/router'),
+	require('pages/cart/router'),
+	require('pages/coupons/router'),
+	require('pages/goods/router'),
+	require('pages/kanjia/router'),
+	require('pages/notice/router'),
+	require('pages/order/router'),
+	require('pages/recharge/router'),
+	require('pages/start/router'),
+	require('pages/user/router'),
+	require('pages/withdraw/router'),
+	require('pages/materialFlow/router'),
 	require('pages/error/router'),
 )
 export default {
@@ -86,51 +93,28 @@ export default {
 		if(JSON.stringify(store.state.routerStatus.backConfig) !== "{}") {
 			store.dispatch("resetBackConfig");
 		}
-		if(to.meta.auth !== false && !globalService.isLogin()){
-			next({name: 'login', query: Object.assign({toName: to.name}, to.query)});
-			return;
-		}
+		
 		// 进行管道中的下一个钩子。如果全部钩子执行完了，则导航的状态就是 confirmed （确认的）。
 		// next(false): 中断当前的导航。如果浏览器的 URL 改变了（可能是用户手动或者浏览器后退按钮），那么 URL 地址会重置到 from 路由对应的地址。
 		// next('/') 或者 next({ path: '/' }): 跳转到一个不同的地址。当前的导航被中断，然后进行一个新的导航。
 		next();
 		const _direction = store.state.routerStatus.direction;
 		if(!_direction) {
-			store.dispatch("updateDirection", appRouters.isGoing(false, window.location.href) ? "going" : "backing");
+			store.dispatch("updateDirection", app.appRouters.isGoing(false, window.location.href) ? "going" : "backing");
 		} else if(_direction === "replace"){
-			appRouters.pop();
+			app.appRouters.pop();
 		}
+		store.dispatch("updateNavbarStatus",{isShowHead: false, isShowBack: false, isShowFoot: false, routeName: to.name});
+		app.appRouters.clear();
 		switch(to.name) {
-			case 'home':
-				store.dispatch("updateNavbarStatus",{isShowHead: false, isShowBack: false});
-				appRouters.clear();
-				break;
-			case 'userCenter':
-				store.dispatch("updateNavbarStatus",{isShowHead: false, isShowBack: false});
-				appRouters.clear();
-				break;
-			case 'myCustomerGathers':
-				store.dispatch("updateNavbarStatus",{isShowHead: false, isShowBack: false});
-				appRouters.clear();
-				break;
-			case 'login':
-				store.dispatch("updateNavbarStatus",{isShowBack: false, isShowHead: true, isShowFoot: false});
-				appRouters.clear();
-				break;
-			case 'welcome':
-				store.dispatch("updateNavbarStatus",{isShowBack: false, isShowHead: false, isShowFoot: false});
-				appRouters.clear();
-				break;
-			case 'barcode':
-				store.dispatch("updateTransition", null);
-				store.dispatch("updateNavbarStatus",{isShowBack: false, isShowHead: false, isShowFoot: false});
-				appRouters.clear();
+			case 'index':
+				store.dispatch("updateNavbarStatus",{isShowHead: true, isShowBack: true, isShowFoot: true});
 				break;
 			default:
 				store.dispatch("updateNavbarStatus",{isShowFoot: false});
 				break;
 		}
-		appRouters.push(_direction && (store.state.routerStatus.direction == "going" || store.state.routerStatus.direction == "backing" || store.state.routerStatus.direction == "replace"), {
+		app.appRouters.push(_direction && (store.state.routerStatus.direction == "going" || store.state.routerStatus.direction == "backing" || store.state.routerStatus.direction == "replace"), {
 			name: to.name,
 			query: to.query,
 			url: window.location.href

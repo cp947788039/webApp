@@ -1,6 +1,4 @@
 /**
- * 作者：yujinjin9@126.com
- * 时间：2017-01-19
  * app事件管理
  */
 export default {

@@ -3,14 +3,15 @@ import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import babelPolyfill from 'babel-polyfill'
 import mui from "common/js/mui"
-import app from './app'
+import app from './app.js'
 import globalService from 'common/js/global-service'
 import log from 'common/js/log'
 import utils from 'common/js/utils'	
 import directives from "common/js/directives"
 import routers from "./router"
+import appRouters from 'common/js/app-routers'
 import filter from "./filter"
-import vueApp from "./app"
+import vueApp from "./app.vue"
 import store from './vuex/store'
 import jQuery from "common/js/jquery-2.1.4.min"
 import config from 'common/js/config'
@@ -20,14 +21,16 @@ import popup from 'popup'
 import moment from 'moment'
 import appSDK from 'common/js/appSDK'
 import wxConfig from 'common/js/wxConfig'
-require('common/js/resize.js')
-require('common/js/jquery.cookie.js')
-require('common/lib/swiper/swiper.min.css')
-require('common/lib/swiper/swiper.min.js')
-require('common/js/echo.min.js')
-
+import 'common/js/resize.js'
+import 'common/js/jquery.cookie.js'
+import 'common/lib/swiper/swiper.min.css'
+import 'common/lib/swiper/swiper.min.js'
+import 'common/js/echo.min.js'
+import 'common/sass/app.scss'
+import 'common/css/mui.css'
+import 'common/css/icons-extra.css'
 Object.assign(app.Config, config);
-window.app = Object.assign({}, app, {log, utils, mui, globalService, config, common, util, popup, moment, appSDK, wxConfig});
+window.app = Object.assign({}, app, {log, utils, mui, globalService, config, common, util, popup, moment, appSDK, wxConfig, appRouters});
 //signalR是基于jquery的，所以必须要把jQuery引进来，Jquery仅仅是用于signalR。太恶心了，其实我TM的真的不想这样...
 window.jQuery = window.$ = jQuery;
 const initVue = function(){
@@ -41,7 +44,7 @@ const initVue = function(){
 	    Vue.directive(key, directives[key]);
 	});
 	const [router, VueApp] = [routers.createRouter(VueRouter, store), Vue.extend(vueApp)];
-	window.app.vueApp = new VueApp({ router, name: "app", store }).$mount('# app');
+	window.app.vueApp = new VueApp({ router, name: "app", store }).$mount('#app');
 }
 mui.init({
 	swipeBack:false, //关闭右滑关闭功能（默认就是false）
