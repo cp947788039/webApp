@@ -219,7 +219,7 @@
         <div class="swiper-wrapper">
             <div class="swiper-slide" v-for="(item,index) in banners" :key="index">
                 <a :href="item.actLink">
-                    <img src="../../../assets/common/images/gods-default-icon.png" :data-echo="item.picUrl|imgBaseUrl" :data-id="item.businessId">
+                    <img src="../../assets/common/images/gods-default-icon.png" :data-echo="item.picUrl|imgBaseUrl" :data-id="item.businessId">
                 </a>
             </div>
         </div>
@@ -234,28 +234,26 @@
             </div>
         </div>
     </div>
-    <div class="search-div" style="background:{{ scrollTop === 0 ?'-webkit-linear-gradient(top, rgba(105,195,170, 1), rgba(105,195,170, 0.3))' :( scrollTop<200 ? 'rgba(105,195,170,'+(scrollTop/400+0.3) +')' : 'rgba(105,195,170,1)')  }} ">
-    <div class="serarch-content">
-      <image src="/images/search-pic.png" class="search-icon" />
-      <input placeholder="请输入搜索内容" class="search-input" maxlength="30" confirm-type="搜索" v-model='searchInput' @click.key.13='toSearch'>
-      </input>
-      <button class='search-btn' @click.key.13="toSearch">搜索
-      </button>
-    </div>
-  </div>
+    <div class="search-div" :style="{'background':scrollTop === 0 ?'-webkit-linear-gradient(top, rgba(105,195,170, 1), rgba(105,195,170, 0.3))' :( scrollTop<200 ? 'rgba(105,195,170,'+(scrollTop/400+0.3) +')' : 'rgba(105,195,170,1)') }">
+	    <div class="serarch-content">
+		    <img src="/images/search-pic.png" class="search-icon" />
+		    <input placeholder="请输入搜索内容" class="search-input" maxlength="30" confirm-type="搜索" v-model='searchInput' @click.key.13='toSearch'/>
+		    <button class='search-btn' @click.key.13="toSearch">搜索</button>
+	    </div>
+	</div>
     <div v-if="noticeList" class="notice">
-      <div class="notice_iteml">公告：</div>
-      <swiper v-if="noticeList" class="notice_swiper" vertical="true" autoplay="true" circular="true" interval="3000">
-        <router-link v-for="(item,id) in noticeList.dataList" :key="id"  to="{name:'notice',query:{id:item.id}}">
-          <swiper-item >
-            <div class="notice_itemr">{{item.title}}</div>
-          </swiper-item>
-        </router-link>
-      </swiper>
+      	<div class="notice_iteml">公告：</div>
+      	<swiper v-if="noticeList" class="notice_swiper" vertical="true" autoplay="true" circular="true" interval="3000">
+        	<router-link v-for="(item,id) in noticeList.dataList" :key="id"  to="{name:'notice',query:{id:item.id}}">
+          		<swiper-item >
+           		 	<div class="notice_itemr">{{item.title}}</div>
+          		</swiper-item>
+        	</router-link>
+     	</swiper>
     </div>
     <div class="coupons" v-show="hasNoCoupons">
         <div class="coupons-scroll">
-            <div class="coupons-item" v-for="(item,idx) in coupons" :key="idx"  @click="gitCoupon" data-id="{{item.id}}">
+            <div class="coupons-item" v-for="(item,idx) in coupons" :key="idx"  @click="gitCoupon(item)">
                <div>{{item.moneyMax | currency}}元 </div>
                <div>{{item.name}} </div>
                <div>满 {{item.moneyHreshold}} 元使用 </div>
@@ -266,13 +264,13 @@
     </div>
     <div class="goods-container">
         <div class="goods-box" v-for="(item,index) in goods" key="index" @click="toDetailsTap(item)">
-           <div class="img-box">
-              <img :src="item.pic+'_m'" class="image"/>
-           </div>
-           <div class="goods-title">{{item.name}}</div>
-           <div style='display:flex;'>
-            <div class="goods-price">{{item.minPrice | currency}}</div>
-            <div v-if="item.originalPrice && item.originalPrice > 0" class="goods-price" style='color:#aaa;text-decoration:line-through'>{{item.originalPrice | currency}}</div>
+           	<div class="img-box">
+              	<img :src="item.pic+'_m'" class="image"/>
+           	</div>
+           	<div class="goods-title">{{item.name}}</div>
+           	<div style='display:flex;'>
+            	<div class="goods-price">{{item.minPrice | currency}}</div>
+            	<div v-if="item.originalPrice && item.originalPrice > 0" class="goods-price" style='color:#aaa;text-decoration:line-through'>{{item.originalPrice | currency}}</div>
            </div>           
         </div>
     </div>
@@ -287,7 +285,7 @@
 			    autoplay: true,
 			    interval: 3000,
 			    duration: 1000,
-			    loadingHidden: false , // loading
+			    loadingHidden: false,
 			    userInfo: {},
 			    swiperCurrent: 0,  
 			    selectCurrent:0,
@@ -319,23 +317,23 @@
 				this.$router.push({name:goodsDetails,query:{id:item.id}});
 			},
 			getList() {
-			    util.ajax({
-			        url: config.baseApi + '/banner/list',
+			    app.util.ajax({
+			        url: app.config.baseApi + '/banner/list',
 			        data: {
 			            key: 'mallName'
 			        },
 			        success: (data)=> {
 				        if (data.data.code == 404) {
-				            popup.alert({
+				            app.popup.alert({
 				                title: '请在后台添加 banner 轮播图片'
 				          })
 				        } else {
 				        	this.banners = data.data.data;
 				        }
-			      }
+			      	}
 			    })
-			    util.ajax({
-			        url: config.baseApi +'/shop/goods/category/all',
+			    app.util.ajax({
+			        url: app.config.baseApi +'/shop/goods/category/all',
 			        success: (data) => {
 			        	let categories = [{id:0, name:"全部"}];
 			        	if (data.data.code == 0) {
@@ -355,8 +353,8 @@
 			    if (categoryId == 0) {
 			      categoryId = "";
 			    }
-			    util.ajax({
-			      	url: config.baseApi +'/shop/goods/list',
+			    app.util.ajax({
+			      	url: app.config.baseApi +'/shop/goods/list',
 			      	data: {
 			        	categoryId: categoryId,
 			        	nameLike: this.searchInput
@@ -377,8 +375,8 @@
 			    })
 			},
 			getCoupons() {
-			    util.ajax({
-			      	url: config.baseApi + '/discounts/coupons',
+			    app.util.ajax({
+			      	url: app.config.baseApi + '/discounts/coupons',
 			      	data: {
 			        	type: ''
 			      	},
@@ -391,40 +389,40 @@
 			    })
 			},
 			gitCoupon(item) {
-			    util.ajax({
-			      	url: config.baseApi + '/discounts/fetch',
+			    app.util.ajax({
+			      	url: app.config.baseApi + '/discounts/fetch',
 			      	data: {
 			        	id: item.id,
 			        	token: app.globalData.token
 			      	},
 			      	success:(data)=> {
 				        if (data.data.code == 20001 || data.data.code == 20002) {
-				          	popup.alert({title:'来晚了！'});
+				          	app.popup.alert({title:'来晚了！'});
 				          	return;
 				        }
 				        if (data.data.code == 20003) {
-				        	popup.alert({title:'您领过了，别贪心哦~'});
+				        	app.popup.alert({title:'您领过了，别贪心哦~'});
 				          	return;
 				        }
 				        if (data.data.code == 30001) {
-				        	popup.alert({title:'您的积分不足！'});
+				        	app.popup.alert({title:'您的积分不足！'});
 				          	return;
 				        }
 				        if (data.data.code == 20004) {
-				        	popup.alert({title:'已过期~'});
+				        	app.popup.alert({title:'已过期~'});
 				          	return;
 				        }
 				        if (data.data.code == 0) {
-				        	popup.alert({title:'领取成功，赶紧去下单吧~'});
+				        	app.popup.alert({title:'领取成功，赶紧去下单吧~'});
 				        } else {
-				        	popup.alert({title:res.data.msg});
+				        	app.popup.alert({title:res.data.msg});
 				        }
 			      	}
 			    })
 			},
 		  	getNotice() {
-		    	util.ajax({
-		      		url: config.baseApi + '/notice/list',
+		    	app.util.ajax({
+		      		url: app.config.baseApi + '/notice/list',
 		      		data: { pageSize:5},
 		      		success:(data)=> {
 		        		if (data.data.code == 0) {
