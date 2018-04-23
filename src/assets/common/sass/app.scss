@@ -5,7 +5,7 @@ html, body {
 
 body {
     min-width: 320px;
-    background: #f9f9f9;
+    background: #fff;
     overflow-x: hidden;
     overflow-y: scroll;
     -webkit-text-size-adjust: none;
@@ -31,11 +31,20 @@ body,button,input,select,textarea {
     display: block;
 }
 
-.app {
+#app {
     height: 100%;
     position: relative;
-    max-width: 540px;
+    max-width: 750px;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    -webkit-box-sizing: border-box;
+}
+
+.app-img {
+  display: block !important;
 }
 
 .toolbar-fixed {
