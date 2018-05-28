@@ -72,7 +72,7 @@ module.exports = {
 .vui-loading{
     display: block;
     width: 45px; height: 45px;
-    background: url("../imgs/load1.png") no-repeat 0 0;
+    background: url(../../assets/common/images/loading.gif) no-repeat 0 0;
     background-size: 45px 45px;
     margin: 0 auto 10px;
 }
