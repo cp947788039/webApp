@@ -1,9 +1,9 @@
 //order 模块路由设置
 module.exports = [{
-	path: '/user/user',
-	name: 'user',
+	path: '/home/index',
+	name: 'index',
 	meta: {
-		title: '个人中心',
+		title: '首页',
 	},
-	component: resolve => require(['./user.vue'], resolve)
+	component: resolve => require(['./index.vue'], resolve)
 },] 
